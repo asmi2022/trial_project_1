@@ -50,6 +50,32 @@ class UserRepo extends CommonRepo{
             throw error;
         }
     }
+
+    getAll = async(req)=>{
+        try {
+            let query = { isDeleted: false, role: req.body.role };
+            if(req.body.status){
+                query['status'] = req.body.status
+            }
+            let sortField = req.body.sortField || 'name';
+            let sortOperator = {
+                $sort: {
+                    [sortField]: 1
+                } 
+            }
+            if(req.body.sortOrder && req.body.sortOrder == "desc"){
+                sortOperator.$sort[sortField] = -1
+            }
+            return await UserModel.aggregate([
+                {
+                    $match: query
+                },
+                sortOperator
+            ])
+        } catch (error) {
+            throw 
+        }
+    }
 }
 
 module.exports = new UserRepo();

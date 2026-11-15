@@ -334,13 +334,6 @@ class UserController {
         }
     }
 
-    /**
-     * @method resetPassword
-     * @description Reset user's password
-     * @param {{ body: { email: string } }} req 
-     * @param {*} res 
-     * @returns 
-     */
     resetPassword = async(req,res)=>{
         try {
             let user = await this.#repo.userRepo.getByField({email: req.body.email, isDeleted: false});
@@ -402,6 +395,31 @@ class UserController {
             });
         }
     }
-}
 
+    list = async(req,res)=>{
+        try {
+            let role = await this.#repo.roleRepo.getByField({ role: "User", isDeleted: false, status: "Active" });
+            req.body.role = role._id;
+            let user = await this.#repo.userRepo.getAll(req);
+            if(user && user.length){
+                return res.status(200).send({
+                    status: 200,
+                    data: user,
+                    message: "User listing fetched successfully"
+                });
+            }
+            return res.status(200).send({
+                status: 200,
+                data: [],
+                message: "No user found"
+            });
+        } catch (error) {
+            return res.status(500).send({
+                status: 500,
+                data: null,
+                message: error.message
+            });
+        }
+    }
+}
 module.exports = new UserController();

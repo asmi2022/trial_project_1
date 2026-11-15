@@ -118,6 +118,8 @@ class FAQController {
         }
     }
 
+    
+
 }
 
 module.exports = new FAQController();

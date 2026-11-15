@@ -34,6 +34,7 @@ namedRouter.post("api.user.signin", "/user/signin", userController.signIn);
 namedRouter.post("api.user.forget_password", "/user/forgetpassword", userController.forgetPassword);
 namedRouter.post("api.user.otp_verification", "/user/otpverification", userController.otpVerification);
 namedRouter.post("api.user.reset_password", "/user/resetpassword", userController.resetPassword);
+namedRouter.post("api.user.list", "/user/list", userController.list);
 
 namedRouter.all("/user*", Auth.authenticate_API);
 
